@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-pitch text-white antialiased;
+  background-image: radial-gradient(circle at top, rgba(225, 6, 0, 0.2), transparent 45%);
+}
+
+.card {
+  @apply rounded-2xl border border-white/10 bg-white/5 p-4 shadow-xl shadow-black/20;
+}
+
+.badge {
+  @apply rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide;
+}
