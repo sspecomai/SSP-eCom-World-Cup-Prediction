@@ -7,12 +7,23 @@ create extension if not exists "uuid-ossp";
 
 -- ── Enum Types ────────────────────────────────────────────────────────────────
 
-create type public.app_role       as enum ('admin', 'user');
-create type public.answer_type    as enum ('single_choice', 'multi_choice', 'text');
-create type public.prediction_mode as enum ('OUTCOME', 'EXACT');
-create type public.tournament_stage as enum (
-  'group', 'round_of_16', 'quarter_final', 'semi_final', 'final'
-);
+do $$ begin
+  create type public.app_role as enum ('admin', 'user');
+exception when duplicate_object then null; end $$;
+
+do $$ begin
+  create type public.answer_type as enum ('single_choice', 'multi_choice', 'text');
+exception when duplicate_object then null; end $$;
+
+do $$ begin
+  create type public.prediction_mode as enum ('OUTCOME', 'EXACT');
+exception when duplicate_object then null; end $$;
+
+do $$ begin
+  create type public.tournament_stage as enum (
+    'group', 'round_of_16', 'quarter_final', 'semi_final', 'final'
+  );
+exception when duplicate_object then null; end $$;
 
 -- ── Helpers ───────────────────────────────────────────────────────────────────
 
