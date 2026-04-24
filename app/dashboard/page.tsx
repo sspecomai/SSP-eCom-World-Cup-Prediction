@@ -233,7 +233,7 @@ export default async function DashboardPage() {
               {leaderboard.slice(0, 5).map((row) => (
                 <tr
                   key={row.user_id}
-                  className={`border-t border-white/8 ${row.user_id === user.id ? 'bg-danger/8' : ''}`}
+                  className={`border-t border-white/10 ${row.user_id === user.id ? 'bg-danger/10' : ''}`}
                 >
                   <td className="px-4 py-2 font-bold text-silver">#{row.rank}</td>
                   <td className="px-4 py-2">

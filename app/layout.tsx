@@ -41,7 +41,7 @@ export default async function RootLayout({
   }
 
   const isAdmin =
-    (profile?.roles as { role: string } | null)?.role === 'admin';
+    (profile?.roles as unknown as { role: string } | null)?.role === 'admin';
 
   return (
     <html lang="en" className="dark">

@@ -21,7 +21,7 @@ async function requireAdmin() {
     .eq('id', user.id)
     .single();
 
-  const role = (profile?.roles as { role: string } | null)?.role;
+  const role = (profile?.roles as unknown as { role: string } | null)?.role;
   if (role !== 'admin') redirect('/dashboard');
 
   return supabase;

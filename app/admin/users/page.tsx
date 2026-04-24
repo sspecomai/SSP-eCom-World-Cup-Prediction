@@ -19,7 +19,7 @@ export default async function AdminUsersPage() {
 
   const usersWithRole = (users ?? []).map((u) => ({
     ...u,
-    role: (u.roles as { role: string } | null)?.role ?? 'user',
+    role: (u.roles as unknown as { role: string } | null)?.role ?? 'user',
   }));
 
   return (

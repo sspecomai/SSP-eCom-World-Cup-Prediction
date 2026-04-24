@@ -120,7 +120,7 @@ body {
 /* ── Table ───────────────────────────────────────────────────────────────── */
 
 .table-row-hover {
-  @apply border-t border-white/8 transition-colors hover:bg-white/[0.03];
+  @apply border-t border-white/10 transition-colors hover:bg-white/[0.03];
 }
 
 /* ── Scrollbar ───────────────────────────────────────────────────────────── */

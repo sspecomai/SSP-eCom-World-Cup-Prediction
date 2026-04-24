@@ -33,7 +33,7 @@ export function SiteShell({ children, user, profile, isAdmin }: Props) {
   return (
     <div className="min-h-screen bg-pitch">
       {/* ── Header ────────────────────────────────────────────────────────── */}
-      <header className="sticky top-0 z-50 border-b border-white/8 bg-pitch/80 backdrop-blur-md">
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-pitch/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3">
           {/* Logo */}
           <Link href="/" className="flex shrink-0 items-center gap-2">
@@ -54,7 +54,7 @@ export function SiteShell({ children, user, profile, isAdmin }: Props) {
                     'flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors',
                     active
                       ? 'bg-danger/15 text-danger'
-                      : 'text-silver hover:text-white hover:bg-white/8'
+                      : 'text-silver hover:text-white hover:bg-white/10'
                   )}
                 >
                   {icon}
@@ -106,7 +106,7 @@ export function SiteShell({ children, user, profile, isAdmin }: Props) {
                   'flex shrink-0 items-center gap-1 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors',
                   active
                     ? 'bg-danger/15 text-danger'
-                    : 'text-silver hover:text-white hover:bg-white/8'
+                    : 'text-silver hover:text-white hover:bg-white/10'
                 )}
               >
                 {icon}
@@ -121,7 +121,7 @@ export function SiteShell({ children, user, profile, isAdmin }: Props) {
       <main className="mx-auto max-w-7xl px-4 py-6">{children}</main>
 
       {/* ── Footer ────────────────────────────────────────────────────────── */}
-      <footer className="border-t border-white/8 mt-12 py-6 text-center text-xs text-silver/60">
+      <footer className="border-t border-white/10 mt-12 py-6 text-center text-xs text-silver/60">
         © 2026 Supersports Thailand · World Cup 2026 Prediction Game
       </footer>
     </div>

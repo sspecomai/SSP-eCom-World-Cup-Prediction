@@ -66,7 +66,7 @@ export function LeaderboardTable({ rows, highlightUserId }: Props) {
                 key={row.user_id}
                 className={clsx(
                   'table-row-hover',
-                  isYou && 'bg-danger/8 border-l-2 border-danger'
+                  isYou && 'bg-danger/10 border-l-2 border-danger'
                 )}
               >
                 <td className="px-4 py-3">
