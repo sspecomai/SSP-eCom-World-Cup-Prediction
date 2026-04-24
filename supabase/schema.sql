@@ -276,6 +276,8 @@ declare
   user_role_id uuid;
   raw_dn       text;
   raw_nn       text;
+  suffix       int  := 0;
+  final_nn     text;
 begin
   select id into user_role_id from public.roles where role = 'user';
 
@@ -289,8 +291,7 @@ begin
   );
 
   -- Ensure nickname uniqueness by appending a suffix if needed
-  declare suffix int := 0;
-  declare final_nn text := raw_nn;
+  final_nn := raw_nn;
   loop
     exit when not exists (select 1 from public.users where nickname = final_nn);
     suffix := suffix + 1;
