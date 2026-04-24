@@ -14,7 +14,8 @@ export const sampleMatches: MatchRecord[] = [
     scoring_mode: 'EXACT',
     correct_score: 8,
     wrong_score: -2,
-    fallback_outcome_score: 3
+    fallback_outcome_score: 3,
+    allow_edit_before_timeout: true,
   },
   {
     id: 'm2',
@@ -29,8 +30,9 @@ export const sampleMatches: MatchRecord[] = [
     scoring_mode: 'OUTCOME',
     correct_score: 4,
     wrong_score: -1,
-    fallback_outcome_score: 0
-  }
+    fallback_outcome_score: 0,
+    allow_edit_before_timeout: true,
+  },
 ];
 
 export const samplePreQuestions: PreQuestion[] = [
@@ -43,7 +45,7 @@ export const samplePreQuestions: PreQuestion[] = [
     correct_answer: null,
     score_correct: 10,
     score_wrong: -3,
-    allow_edits_before_timeout: true,
-    is_result_published: false
-  }
+    allow_edit_before_timeout: true,
+    is_result_published: false,
+  },
 ];

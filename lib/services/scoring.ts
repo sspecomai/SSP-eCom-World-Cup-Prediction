@@ -1,44 +1,87 @@
-import type { MatchPrediction, MatchRecord } from '@/lib/types';
+import type { MatchRecord, MatchPrediction } from '@/lib/types';
 
-const outcome = (home: number, away: number) => {
-  if (home > away) return 'HOME';
-  if (home < away) return 'AWAY';
-  return 'DRAW';
+type Outcome = 'H' | 'D' | 'A';
+
+function getOutcome(home: number, away: number): Outcome {
+  if (home > away) return 'H';
+  if (home < away) return 'A';
+  return 'D';
+}
+
+export type ScoreResult = {
+  points: number;
+  reason: 'exact' | 'outcome' | 'wrong';
 };
 
-export const scoreMatchPrediction = (match: MatchRecord, prediction: MatchPrediction) => {
-  if (!match.is_result_published || match.final_home_score === null || match.final_away_score === null) {
-    return { points: null as number | null, reason: 'Result pending' };
+export function scoreMatchPrediction(
+  match: Pick<
+    MatchRecord,
+    | 'final_home_score'
+    | 'final_away_score'
+    | 'scoring_mode'
+    | 'correct_score'
+    | 'wrong_score'
+    | 'fallback_outcome_score'
+  >,
+  prediction: Pick<MatchPrediction, 'predicted_home_score' | 'predicted_away_score'>
+): ScoreResult {
+  const { final_home_score: fh, final_away_score: fa } = match;
+
+  if (fh === null || fa === null) {
+    return { points: 0, reason: 'wrong' };
   }
 
-  const isExact =
-    prediction.predicted_home_score === match.final_home_score &&
-    prediction.predicted_away_score === match.final_away_score;
+  const ph = prediction.predicted_home_score;
+  const pa = prediction.predicted_away_score;
 
-  const predictedOutcome = outcome(prediction.predicted_home_score, prediction.predicted_away_score);
-  const actualOutcome = outcome(match.final_home_score, match.final_away_score);
-
-  if (match.scoring_mode === 'OUTCOME') {
-    return isExact || predictedOutcome === actualOutcome
-      ? { points: match.correct_score, reason: 'Correct outcome' }
-      : { points: match.wrong_score, reason: 'Wrong outcome' };
+  if (match.scoring_mode === 'EXACT') {
+    if (ph === fh && pa === fa) {
+      return { points: match.correct_score, reason: 'exact' };
+    }
+    if (getOutcome(ph, pa) === getOutcome(fh, fa)) {
+      return { points: match.fallback_outcome_score, reason: 'outcome' };
+    }
+    return { points: match.wrong_score, reason: 'wrong' };
   }
 
-  if (isExact) return { points: match.correct_score, reason: 'Exact score' };
-  if (predictedOutcome === actualOutcome) {
-    return { points: match.fallback_outcome_score, reason: 'Fallback outcome points' };
+  // OUTCOME mode
+  if (getOutcome(ph, pa) === getOutcome(fh, fa)) {
+    return { points: match.correct_score, reason: 'outcome' };
   }
+  return { points: match.wrong_score, reason: 'wrong' };
+}
 
-  return { points: match.wrong_score, reason: 'Incorrect prediction' };
+export type RankInput = {
+  total_score: number;
+  exact_points: number;
+  outcome_points: number;
+  first_submission_at: string;
+  [key: string]: unknown;
 };
 
-export const rankWithTieBreak = <T extends { total_score: number; exact_points: number; outcome_points: number; first_submission_at: string }>(rows: T[]) => {
-  return [...rows]
-    .sort((a, b) => {
-      if (b.total_score !== a.total_score) return b.total_score - a.total_score;
-      if (b.exact_points !== a.exact_points) return b.exact_points - a.exact_points;
-      if (b.outcome_points !== a.outcome_points) return b.outcome_points - a.outcome_points;
-      return new Date(a.first_submission_at).getTime() - new Date(b.first_submission_at).getTime();
-    })
-    .map((row, index) => ({ ...row, rank: index + 1 }));
-};
+export type RankedRow<T extends RankInput> = T & { rank: number };
+
+export function rankWithTieBreak<T extends RankInput>(rows: T[]): RankedRow<T>[] {
+  const sorted = [...rows].sort((a, b) => {
+    if (b.total_score !== a.total_score) return b.total_score - a.total_score;
+    if (b.exact_points !== a.exact_points) return b.exact_points - a.exact_points;
+    if (b.outcome_points !== a.outcome_points) return b.outcome_points - a.outcome_points;
+    return (
+      new Date(a.first_submission_at).getTime() -
+      new Date(b.first_submission_at).getTime()
+    );
+  });
+
+  let rank = 1;
+  return sorted.map((row, idx) => {
+    if (idx > 0) {
+      const prev = sorted[idx - 1];
+      const sameRank =
+        row.total_score === prev.total_score &&
+        row.exact_points === prev.exact_points &&
+        row.outcome_points === prev.outcome_points;
+      if (!sameRank) rank = idx + 1;
+    }
+    return { ...row, rank };
+  });
+}

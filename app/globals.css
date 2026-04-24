@@ -2,19 +2,139 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
 :root {
   color-scheme: dark;
 }
 
-body {
-  @apply bg-pitch text-white antialiased;
-  background-image: radial-gradient(circle at top, rgba(225, 6, 0, 0.2), transparent 45%);
+* {
+  box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-pitch text-white antialiased;
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #060d1a;
+  background-image:
+    radial-gradient(ellipse at 20% 0%, rgba(225, 6, 0, 0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 100%, rgba(20, 40, 100, 0.2) 0%, transparent 55%);
+  background-attachment: fixed;
+}
+
+/* ── Utility classes ─────────────────────────────────────────────────────── */
+
 .card {
-  @apply rounded-2xl border border-white/10 bg-white/5 p-4 shadow-xl shadow-black/20;
+  @apply rounded-2xl border border-white/10 bg-white/[0.04] p-5 shadow-card backdrop-blur-sm;
+  background-image: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
+}
+
+.card-hover {
+  @apply card transition-all duration-200 hover:border-danger/40 hover:shadow-glow-sm;
 }
 
 .badge {
-  @apply rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide;
+  @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider;
 }
+
+.badge-danger {
+  @apply badge bg-danger/20 text-danger;
+}
+
+.badge-silver {
+  @apply badge bg-white/10 text-silver;
+}
+
+.badge-gold {
+  @apply badge bg-gold/20 text-gold;
+}
+
+.badge-green {
+  @apply badge bg-emerald-500/20 text-emerald-400;
+}
+
+.badge-blue {
+  @apply badge bg-blue-500/20 text-blue-400;
+}
+
+/* ── Form inputs ─────────────────────────────────────────────────────────── */
+
+.input {
+  @apply w-full rounded-xl border border-white/15 bg-black/30 px-4 py-3 text-white
+         placeholder-silver/50 transition-colors duration-150
+         focus:border-danger/60 focus:outline-none focus:ring-1 focus:ring-danger/40;
+}
+
+.input-sm {
+  @apply input py-2 text-sm;
+}
+
+.select {
+  @apply input appearance-none cursor-pointer;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────────── */
+
+.btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5
+         font-bold transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+.btn-primary {
+  @apply btn bg-danger text-white hover:bg-danger-dark active:scale-[0.98] shadow-glow-sm;
+}
+
+.btn-secondary {
+  @apply btn border border-white/20 bg-white/5 text-white hover:bg-white/10;
+}
+
+.btn-ghost {
+  @apply btn text-silver hover:text-white hover:bg-white/5;
+}
+
+.btn-sm {
+  @apply btn px-3 py-1.5 text-sm;
+}
+
+/* ── Rank badges ─────────────────────────────────────────────────────────── */
+
+.rank-1 { @apply text-gold font-black; }
+.rank-2 { @apply text-silver font-black; }
+.rank-3 { @apply text-amber-600 font-black; }
+
+/* ── Score display ───────────────────────────────────────────────────────── */
+
+.scoreboard-digit {
+  @apply min-w-[2.5rem] rounded-lg bg-black/50 px-3 py-2 text-center text-2xl font-black
+         border border-white/10 tabular-nums;
+}
+
+/* ── Table ───────────────────────────────────────────────────────────────── */
+
+.table-row-hover {
+  @apply border-t border-white/8 transition-colors hover:bg-white/[0.03];
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { @apply rounded-full bg-white/20; }
+::-webkit-scrollbar-thumb:hover { @apply bg-white/30; }
+
+/* ── Countdown pulse ─────────────────────────────────────────────────────── */
+
+@keyframes countdown-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.countdown-urgent { animation: countdown-pulse 1s ease-in-out infinite; }
